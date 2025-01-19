@@ -1,4 +1,5 @@
 # Password Toggle Plus for WHMCS
+![Password Toggle Plus for WHMCS](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/password_toggle_plus150.jpeg?raw=true)
 
 Enhance your WHMCS client area with secure password visibility controls and copy functionality.
 
