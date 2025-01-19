@@ -16,8 +16,8 @@ Enhance your WHMCS client area with secure password visibility controls and copy
 3. Activate the module in WHMCS Admin Area → Setup → Addon Modules
 
 ## Requirements
-- WHMCS version 7.0 or higher
-- PHP 7.2 or higher
+- WHMCS version 8.9 or higher
+- PHP 8.1 or higher
 
 ## Support
 For support, please open an issue on GitHub or contact us at support@arkhost.com
