@@ -1,5 +1,5 @@
 # Password Toggle Plus for WHMCS
-![Password Toggle Plus for WHMCS](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/password_toggle_plus150.jpeg?raw=true)
+![Password Toggle Plus for WHMCS](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/password_toggle_plus150.jpeg?raw=true)
 
 Enhance your WHMCS client area with secure password visibility controls and copy functionality.
 
@@ -19,6 +19,11 @@ Enhance your WHMCS client area with secure password visibility controls and copy
 ## Requirements
 - WHMCS version 8.9 or higher
 - PHP 8.1 or higher
+
+## Screenshots
+![1](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/1.png?raw=true)
+![2](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/2.png?raw=true)
+![3](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/3.png?raw=true)
 
 ## Support
 For support, please open an issue on GitHub or contact us at support@arkhost.com
