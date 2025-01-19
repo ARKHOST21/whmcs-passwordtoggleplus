@@ -19,22 +19,18 @@ function passwordtoggleplus_show_passwords($vars) {
             ->value('packageid');
             
         if ($pid) {
-            // Get product-specific custom fields
             $productFields = Capsule::table('tblcustomfields')
                 ->where('type', 'product')
                 ->where('relid', $pid)
                 ->get();
                 
-            // Get global custom fields
             $globalFields = Capsule::table('tblcustomfields')
                 ->where('type', 'client')
                 ->get();
                 
-            // Combine both sets of fields
             $fields = collect($productFields)->merge($globalFields);
                 
             foreach ($fields as $field) {
-                // Check for various password-related field names
                 $fieldNameLower = strtolower($field->fieldname);
                 if (strpos($fieldNameLower, 'password') !== false || 
                     strpos($fieldNameLower, 'pass') !== false || 
@@ -46,9 +42,11 @@ function passwordtoggleplus_show_passwords($vars) {
                         ->value('value');
                     
                     if ($value) {
-                        // Decrypt the password value
                         $decryptedValue = decrypt($value);
-                        die($decryptedValue ?? 'No password value');
+                        // Convert HTML entities to their actual characters before output
+                        $cleanValue = html_entity_decode($decryptedValue, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                        header('Content-Type: text/plain');
+                        die($cleanValue ?? 'No password value');
                     }
                 }
             }
@@ -76,6 +74,7 @@ function passwordtoggleplus_show_passwords($vars) {
         }
         .password-field {
             font-family: monospace;
+            white-space: pre;
         }
         .copy-tooltip {
             position: absolute;
@@ -94,25 +93,24 @@ function passwordtoggleplus_show_passwords($vars) {
         function modifyPasswordFields() {
             console.log("Starting password field modification...");
             
-            // Find password fields in both additional info and custom fields sections
             const rows = document.querySelectorAll("#additionalinfo .row, .custom-field-row");
             rows.forEach(row => {
                 const label = row.querySelector("strong, .field-label");
                 if (label && /password|pass|pwd/i.test(label.textContent.trim())) {
                     console.log("Found password row:", label.textContent.trim());
                     
-                    // Get the value cell
                     const valueCell = row.querySelector(".col-sm-7, .field-value");
                     if (valueCell) {
                         console.log("Found value cell");
                         
-                        // Create new elements
                         const container = document.createElement("div");
                         container.className = "password-container";
                         container.style.position = "relative";
                         
-                        const passwordSpan = document.createElement("span");
+                        const passwordSpan = document.createElement("pre");
                         passwordSpan.className = "password-field";
+                        passwordSpan.style.margin = "0";
+                        passwordSpan.style.display = "inline";
                         passwordSpan.textContent = "******";
                         
                         const toggleBtn = document.createElement("button");
@@ -124,21 +122,19 @@ function passwordtoggleplus_show_passwords($vars) {
                         copyBtn.type = "button";
                         copyBtn.className = "password-copy";
                         copyBtn.textContent = "Copy";
-                        copyBtn.style.display = "none"; // Hide initially
+                        copyBtn.style.display = "none";
 
                         const tooltip = document.createElement("span");
                         tooltip.className = "copy-tooltip";
                         tooltip.textContent = "Copied!";
                         tooltip.style.opacity = "0";
                         
-                        // Add copy functionality
                         copyBtn.addEventListener("click", async function(e) {
                             e.preventDefault();
                             e.stopPropagation();
                             
-                            const textToCopy = passwordSpan.textContent;
                             try {
-                                await navigator.clipboard.writeText(textToCopy);
+                                await navigator.clipboard.writeText(passwordSpan.getAttribute("data-raw-password") || passwordSpan.textContent);
                                 tooltip.style.opacity = "1";
                                 setTimeout(() => {
                                     tooltip.style.opacity = "0";
@@ -148,7 +144,6 @@ function passwordtoggleplus_show_passwords($vars) {
                             }
                         });
 
-                        // Add toggle handler
                         toggleBtn.addEventListener("click", function(e) {
                             e.preventDefault();
                             e.stopPropagation();
@@ -164,6 +159,7 @@ function passwordtoggleplus_show_passwords($vars) {
                                             return;
                                         }
                                         passwordSpan.textContent = password;
+                                        passwordSpan.setAttribute("data-raw-password", password);
                                         toggleBtn.textContent = "Hide";
                                         copyBtn.style.display = "inline-block";
                                     })
@@ -180,13 +176,11 @@ function passwordtoggleplus_show_passwords($vars) {
                             return false;
                         });
                         
-                        // Assemble and insert
                         container.appendChild(passwordSpan);
                         container.appendChild(toggleBtn);
                         container.appendChild(copyBtn);
                         container.appendChild(tooltip);
                         
-                        // Clear and update the value cell
                         valueCell.innerHTML = "";
                         valueCell.appendChild(container);
                         
@@ -196,17 +190,14 @@ function passwordtoggleplus_show_passwords($vars) {
             });
         }
 
-        // Run the function when DOM is ready
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", modifyPasswordFields);
         } else {
             modifyPasswordFields();
         }
 
-        // Run again after a delay to catch dynamic content
         setTimeout(modifyPasswordFields, 1000);
     </script>';
 }
 
-// Register the hook
 add_hook('ClientAreaFooterOutput', 1, 'passwordtoggleplus_show_passwords');
