@@ -23,7 +23,6 @@ Enhance your WHMCS client area with secure password visibility controls and copy
 ## Screenshots
 ![1](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/1.png?raw=true)
 ![2](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/2.png?raw=true)
-![3](https://github.com/ARKHOST21/whmcs-passwordtoggleplus/blob/main/images/3.png?raw=true)
 
 ## Support
 For support, please open an issue on GitHub or contact us at support@arkhost.com
